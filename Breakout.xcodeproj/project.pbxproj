@@ -16,6 +16,18 @@
 		738C255921373587001EC1B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 738C255821373587001EC1B0 /* Assets.xcassets */; };
 		738C255C21373587001EC1B0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 738C255A21373587001EC1B0 /* LaunchScreen.storyboard */; };
 		738C256721373587001EC1B0 /* BreakoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C256621373587001EC1B0 /* BreakoutTests.swift */; };
+		738C25792137362E001EC1B0 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C25722137362D001EC1B0 /* System.swift */; };
+		738C257A2137362E001EC1B0 /* EntityBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C25732137362D001EC1B0 /* EntityBuilder.swift */; };
+		738C257C2137362E001EC1B0 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C25752137362E001EC1B0 /* Entity.swift */; };
+		738C257D2137362E001EC1B0 /* EntityScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C25762137362E001EC1B0 /* EntityScene.swift */; };
+		738C257E2137362E001EC1B0 /* NodeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C25772137362E001EC1B0 /* NodeComponent.swift */; };
+		738C257F2137362E001EC1B0 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C25782137362E001EC1B0 /* Component.swift */; };
+		738C25862137384B001EC1B0 /* ComponentContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C25802137384A001EC1B0 /* ComponentContainerTests.swift */; };
+		738C25872137384B001EC1B0 /* EntityBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C25812137384A001EC1B0 /* EntityBuilderTests.swift */; };
+		738C25882137384B001EC1B0 /* EntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C25822137384A001EC1B0 /* EntityTests.swift */; };
+		738C25892137384B001EC1B0 /* Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C25832137384B001EC1B0 /* Support.swift */; };
+		738C258A2137384B001EC1B0 /* EntitySceneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C25842137384B001EC1B0 /* EntitySceneTests.swift */; };
+		738C258B2137384B001EC1B0 /* MockScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C25852137384B001EC1B0 /* MockScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +54,18 @@
 		738C256221373587001EC1B0 /* BreakoutTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BreakoutTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		738C256621373587001EC1B0 /* BreakoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakoutTests.swift; sourceTree = "<group>"; };
 		738C256821373587001EC1B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		738C25722137362D001EC1B0 /* System.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
+		738C25732137362D001EC1B0 /* EntityBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityBuilder.swift; sourceTree = "<group>"; };
+		738C25752137362E001EC1B0 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
+		738C25762137362E001EC1B0 /* EntityScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityScene.swift; sourceTree = "<group>"; };
+		738C25772137362E001EC1B0 /* NodeComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeComponent.swift; sourceTree = "<group>"; };
+		738C25782137362E001EC1B0 /* Component.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
+		738C25802137384A001EC1B0 /* ComponentContainerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentContainerTests.swift; sourceTree = "<group>"; };
+		738C25812137384A001EC1B0 /* EntityBuilderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityBuilderTests.swift; sourceTree = "<group>"; };
+		738C25822137384A001EC1B0 /* EntityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityTests.swift; sourceTree = "<group>"; };
+		738C25832137384B001EC1B0 /* Support.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Support.swift; sourceTree = "<group>"; };
+		738C25842137384B001EC1B0 /* EntitySceneTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntitySceneTests.swift; sourceTree = "<group>"; };
+		738C25852137384B001EC1B0 /* MockScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +89,7 @@
 		738C253F21373586001EC1B0 = {
 			isa = PBXGroup;
 			children = (
+				738C25712137359F001EC1B0 /* ECS */,
 				738C254A21373586001EC1B0 /* Breakout */,
 				738C256521373587001EC1B0 /* BreakoutTests */,
 				738C254921373586001EC1B0 /* Products */,
@@ -99,10 +124,29 @@
 		738C256521373587001EC1B0 /* BreakoutTests */ = {
 			isa = PBXGroup;
 			children = (
+				738C25802137384A001EC1B0 /* ComponentContainerTests.swift */,
+				738C25812137384A001EC1B0 /* EntityBuilderTests.swift */,
+				738C25842137384B001EC1B0 /* EntitySceneTests.swift */,
+				738C25822137384A001EC1B0 /* EntityTests.swift */,
+				738C25852137384B001EC1B0 /* MockScene.swift */,
+				738C25832137384B001EC1B0 /* Support.swift */,
 				738C256621373587001EC1B0 /* BreakoutTests.swift */,
 				738C256821373587001EC1B0 /* Info.plist */,
 			);
 			path = BreakoutTests;
+			sourceTree = "<group>";
+		};
+		738C25712137359F001EC1B0 /* ECS */ = {
+			isa = PBXGroup;
+			children = (
+				738C25782137362E001EC1B0 /* Component.swift */,
+				738C25752137362E001EC1B0 /* Entity.swift */,
+				738C25732137362D001EC1B0 /* EntityBuilder.swift */,
+				738C25762137362E001EC1B0 /* EntityScene.swift */,
+				738C25772137362E001EC1B0 /* NodeComponent.swift */,
+				738C25722137362D001EC1B0 /* System.swift */,
+			);
+			path = ECS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -115,6 +159,7 @@
 				738C254421373586001EC1B0 /* Sources */,
 				738C254521373586001EC1B0 /* Frameworks */,
 				738C254621373586001EC1B0 /* Resources */,
+				738C258D21389030001EC1B0 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -203,14 +248,36 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		738C258D21389030001EC1B0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		738C254421373586001EC1B0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				738C25792137362E001EC1B0 /* System.swift in Sources */,
+				738C257A2137362E001EC1B0 /* EntityBuilder.swift in Sources */,
+				738C257C2137362E001EC1B0 /* Entity.swift in Sources */,
 				738C255221373586001EC1B0 /* GameScene.swift in Sources */,
 				738C255421373586001EC1B0 /* GameViewController.swift in Sources */,
+				738C257E2137362E001EC1B0 /* NodeComponent.swift in Sources */,
 				738C254C21373586001EC1B0 /* AppDelegate.swift in Sources */,
+				738C257D2137362E001EC1B0 /* EntityScene.swift in Sources */,
+				738C257F2137362E001EC1B0 /* Component.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,7 +285,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				738C25882137384B001EC1B0 /* EntityTests.swift in Sources */,
+				738C258A2137384B001EC1B0 /* EntitySceneTests.swift in Sources */,
+				738C25892137384B001EC1B0 /* Support.swift in Sources */,
+				738C258B2137384B001EC1B0 /* MockScene.swift in Sources */,
+				738C25872137384B001EC1B0 /* EntityBuilderTests.swift in Sources */,
 				738C256721373587001EC1B0 /* BreakoutTests.swift in Sources */,
+				738C25862137384B001EC1B0 /* ComponentContainerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
