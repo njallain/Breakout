@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Solar_Wind
+@testable import Breakout
 
 class ComponentContainerTests: XCTestCase {
 	private var builder: EntityBuilder! = nil

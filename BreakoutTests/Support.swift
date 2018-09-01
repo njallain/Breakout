@@ -8,7 +8,11 @@
 
 import Foundation
 import CoreGraphics
-@testable import Solar_Wind
+@testable import Breakout
+
+struct Named: Component, Equatable {
+	let name: String
+}
 
 struct Tagged: Component, Equatable {
 	let tag: String
@@ -35,19 +39,15 @@ extension CGVector: ApproximateEquatable {
 		return (lhs.dx ~= rhs.dx) && (lhs.dy ~= rhs.dy)
 	}
 }
-extension ComputedVector: ApproximateEquatable {
-	static func ~= (lhs: ComputedVector, rhs: ComputedVector) -> Bool {
-		return (lhs.x ~= rhs.x) && (lhs.y ~= rhs.y)
-	}
-}
 extension CGPoint: ApproximateEquatable {
 	static func ~= (lhs: CGPoint, rhs: CGPoint) -> Bool {
 		return (lhs.x ~= rhs.x) && (lhs.y ~= rhs.y)
 	}
 }
 
-extension Angle: ApproximateEquatable {
-	static func ~= (lhs: Angle, rhs: Angle) -> Bool {
-		return lhs.radians ~= rhs.radians
+extension CGSize: ApproximateEquatable {
+	static func ~= (lhs: CGSize, rhs: CGSize) -> Bool {
+		return (lhs.height ~= rhs.height) && (lhs.width ~= rhs.width)
 	}
+
 }

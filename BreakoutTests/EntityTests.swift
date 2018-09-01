@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Solar_Wind
+@testable import Breakout
 
 class EntityTests: XCTestCase {
 

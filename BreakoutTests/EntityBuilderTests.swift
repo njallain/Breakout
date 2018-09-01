@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Solar_Wind
+@testable import Breakout
 import SpriteKit
 
 class EntityBuilderTests: XCTestCase {
@@ -71,7 +71,6 @@ class EntityBuilderTests: XCTestCase {
 		let namedList = DenseComponentContainer<Named>(size: 10).register(with: builder)
 		let list = DenseComponentContainer<SKNode>(size: 10).register(with: builder)
 		let entityNode = builder.build(node: SKNode(), list: list).add(namedList, Named(name: "node"))
-		assertEqual(entityNode.entity, entityNode.node.associatedEntity)
 		assertEqual(entityNode.node, list.get(entity: entityNode.entity))
 	}
 	private func testComponentList<ComponentListType: ComponentContainer>(

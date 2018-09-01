@@ -8,7 +8,7 @@
 
 import Foundation
 import XCTest
-@testable import Solar_Wind
+@testable import Breakout
 
 func assertEqual<T>(
 	_ expression1: @autoclosure () throws -> T?,
