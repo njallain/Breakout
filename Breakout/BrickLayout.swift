@@ -52,6 +52,6 @@ struct BrickLayout {
 		let location = CGPoint(
 			x: brickSizeWithBorder.width * CGFloat(column) + brickMidpoint.x,
 			y: (brickSizeWithBorder.height * CGFloat(row) + brickMidpoint.y) * side.verticalMultipler )
-		return Body(location: location, size: brickSize)
+		return Body(position: location, size: brickSize)
 	}
 }

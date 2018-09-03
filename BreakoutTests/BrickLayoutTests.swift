@@ -33,8 +33,8 @@ class BrickLayoutTests: XCTestCase {
 			brickBorder: 2,
 			heightRatio: 0.25)
 		let body = layout.brickBody(row: 2, column: 3, side: .playerOne)
-		assertAlmostEqual(layout.brickSizeWithBorder.width * 3 + layout.brickMidpoint.x, body.location.x)
-		assertAlmostEqual(-(layout.brickSizeWithBorder.height * 2 + layout.brickMidpoint.y), body.location.y)
+		assertAlmostEqual(layout.brickSizeWithBorder.width * 3 + layout.brickMidpoint.x, body.position.x)
+		assertAlmostEqual(-(layout.brickSizeWithBorder.height * 2 + layout.brickMidpoint.y), body.position.y)
 		assertAlmostEqual(layout.brickSize, body.size)
 	}
 }

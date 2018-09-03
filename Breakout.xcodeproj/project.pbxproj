@@ -27,12 +27,15 @@
 		738C258B2137384B001EC1B0 /* MockScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C25852137384B001EC1B0 /* MockScene.swift */; };
 		738C258F213896A4001EC1B0 /* BreakoutScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C258E213896A4001EC1B0 /* BreakoutScene.swift */; };
 		738C2593213AAB70001EC1B0 /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C2592213AAB70001EC1B0 /* Body.swift */; };
-		738C2595213AACAD001EC1B0 /* Movement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C2594213AACAD001EC1B0 /* Movement.swift */; };
+		738C2595213AACAD001EC1B0 /* Movable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C2594213AACAD001EC1B0 /* Movable.swift */; };
 		738C2597213ABA4D001EC1B0 /* Side.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C2596213ABA4D001EC1B0 /* Side.swift */; };
 		738C2599213ABB92001EC1B0 /* Breakable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C2598213ABB92001EC1B0 /* Breakable.swift */; };
 		738C259B213ABD5A001EC1B0 /* BrickLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C259A213ABD5A001EC1B0 /* BrickLayout.swift */; };
 		738C259D213AC0F5001EC1B0 /* TestExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C259C213AC0F5001EC1B0 /* TestExtensions.swift */; };
 		738C259F213AC153001EC1B0 /* BrickLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C259E213AC153001EC1B0 /* BrickLayoutTests.swift */; };
+		738C25A1213BEDA2001EC1B0 /* MovementSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C25A0213BEDA2001EC1B0 /* MovementSystem.swift */; };
+		738C25A3213BF00A001EC1B0 /* CollisionSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C25A2213BF00A001EC1B0 /* CollisionSystem.swift */; };
+		738C25A5213BF172001EC1B0 /* Collidable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C25A4213BF172001EC1B0 /* Collidable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,12 +73,15 @@
 		738C25852137384B001EC1B0 /* MockScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockScene.swift; sourceTree = "<group>"; };
 		738C258E213896A4001EC1B0 /* BreakoutScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakoutScene.swift; sourceTree = "<group>"; };
 		738C2592213AAB70001EC1B0 /* Body.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Body.swift; sourceTree = "<group>"; };
-		738C2594213AACAD001EC1B0 /* Movement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movement.swift; sourceTree = "<group>"; };
+		738C2594213AACAD001EC1B0 /* Movable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movable.swift; sourceTree = "<group>"; };
 		738C2596213ABA4D001EC1B0 /* Side.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Side.swift; sourceTree = "<group>"; };
 		738C2598213ABB92001EC1B0 /* Breakable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Breakable.swift; sourceTree = "<group>"; };
 		738C259A213ABD5A001EC1B0 /* BrickLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrickLayout.swift; sourceTree = "<group>"; };
 		738C259C213AC0F5001EC1B0 /* TestExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestExtensions.swift; sourceTree = "<group>"; };
 		738C259E213AC153001EC1B0 /* BrickLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrickLayoutTests.swift; sourceTree = "<group>"; };
+		738C25A0213BEDA2001EC1B0 /* MovementSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementSystem.swift; sourceTree = "<group>"; };
+		738C25A2213BF00A001EC1B0 /* CollisionSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionSystem.swift; sourceTree = "<group>"; };
+		738C25A4213BF172001EC1B0 /* Collidable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collidable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,9 +172,10 @@
 			isa = PBXGroup;
 			children = (
 				738C2592213AAB70001EC1B0 /* Body.swift */,
-				738C2594213AACAD001EC1B0 /* Movement.swift */,
+				738C2594213AACAD001EC1B0 /* Movable.swift */,
 				738C2596213ABA4D001EC1B0 /* Side.swift */,
 				738C2598213ABB92001EC1B0 /* Breakable.swift */,
+				738C25A4213BF172001EC1B0 /* Collidable.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -176,6 +183,8 @@
 		738C2591213AAB43001EC1B0 /* Systems */ = {
 			isa = PBXGroup;
 			children = (
+				738C25A0213BEDA2001EC1B0 /* MovementSystem.swift */,
+				738C25A2213BF00A001EC1B0 /* CollisionSystem.swift */,
 			);
 			path = Systems;
 			sourceTree = "<group>";
@@ -298,6 +307,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				738C25A3213BF00A001EC1B0 /* CollisionSystem.swift in Sources */,
 				738C2593213AAB70001EC1B0 /* Body.swift in Sources */,
 				738C2599213ABB92001EC1B0 /* Breakable.swift in Sources */,
 				738C25792137362E001EC1B0 /* System.swift in Sources */,
@@ -307,12 +317,14 @@
 				738C255221373586001EC1B0 /* GameScene.swift in Sources */,
 				738C2597213ABA4D001EC1B0 /* Side.swift in Sources */,
 				738C255421373586001EC1B0 /* GameViewController.swift in Sources */,
+				738C25A5213BF172001EC1B0 /* Collidable.swift in Sources */,
 				738C257E2137362E001EC1B0 /* NodeComponent.swift in Sources */,
-				738C2595213AACAD001EC1B0 /* Movement.swift in Sources */,
+				738C2595213AACAD001EC1B0 /* Movable.swift in Sources */,
 				738C254C21373586001EC1B0 /* AppDelegate.swift in Sources */,
 				738C259B213ABD5A001EC1B0 /* BrickLayout.swift in Sources */,
 				738C257D2137362E001EC1B0 /* EntityScene.swift in Sources */,
 				738C257F2137362E001EC1B0 /* Component.swift in Sources */,
+				738C25A1213BEDA2001EC1B0 /* MovementSystem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -128,10 +128,22 @@ class SparseComponentContainer<ComponentType: Component> : ComponentContainer {
 	}
 }
 
+enum ContainerIterationAction: Equatable {
+	case `continue`
+	case `break`
+}
 extension ComponentContainer {
 	func forEach(action: (Entity, ComponentType) -> Void) {
 		for (entity, component) in entities {
 			action(entity, component)
+		}
+	}
+
+	func forEachUntil(action: (Entity, ComponentType) -> ContainerIterationAction) {
+		for (entity, component) in entities {
+			if action(entity, component) == .break {
+				break
+			}
 		}
 	}
 	func forEach<ContainerType1: ComponentContainer>(
@@ -145,6 +157,16 @@ extension ComponentContainer {
 		}
 	}
 
+	func forEachUntil<ContainerType1: ComponentContainer>(
+		with container: ContainerType1,
+		action: (Entity, ComponentType, ContainerType1.ComponentType) -> ContainerIterationAction) {
+		self.forEachUntil { entity, component in
+			guard let component1 = container.get(entity: entity) else {
+				return .continue
+			}
+			return action(entity, component, component1)
+		}
+	}
 	func forEach<ContainerType1: ComponentContainer, ContainerType2: ComponentContainer>(
 		with list1: ContainerType1,
 		_ list2: ContainerType2,
