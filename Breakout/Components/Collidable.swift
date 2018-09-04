@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftECS
 
 /**
  The CollisionCheck component is just an indicator that the entity needs

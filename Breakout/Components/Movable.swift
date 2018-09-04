@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreGraphics
+import SwiftECS
 
 /**
 	Move a point by various strategies

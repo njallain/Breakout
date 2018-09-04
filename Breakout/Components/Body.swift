@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreGraphics
+import SwiftECS
 
 /**
  A physical body in the game that may be collided with

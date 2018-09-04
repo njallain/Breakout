@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreGraphics
+import SwiftECS
 
 /**
 	Represents which side an entity is on.

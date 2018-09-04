@@ -1,0 +1,3 @@
+[submodule "SwiftECS"]
+	path = SwiftECS
+	url = https://github.com/njallain/SwiftECS.git

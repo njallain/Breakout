@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftECS
 
 /**
  The movement system depends on the following components

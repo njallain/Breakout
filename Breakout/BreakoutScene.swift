@@ -8,6 +8,7 @@
 
 import Foundation
 import SpriteKit
+import SwiftECS
 
 /**
  This is essentally the same idea as an SKScene or SCNScene.

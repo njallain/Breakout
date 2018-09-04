@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreGraphics
+import SwiftECS
 
 /**
  The Collision system depends on the following components:

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftECS
 
 /**
 	Any entity that can be broken
