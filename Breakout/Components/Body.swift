@@ -26,6 +26,7 @@ struct Body: Component {
 		let midX = size.width / 2
 		return CGRect(origin: CGPoint(x: position.x - midX, y: position.y - midY), size: size)
 	}
+	static let zero = Body(position: .zero, size: .zero)
 }
 
 protocol BodyComponents {

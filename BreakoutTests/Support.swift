@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreGraphics
+import SwiftECS
 @testable import Breakout
 
 struct Named: Component, Equatable {
@@ -50,4 +51,10 @@ extension CGSize: ApproximateEquatable {
 		return (lhs.height ~= rhs.height) && (lhs.width ~= rhs.width)
 	}
 
+}
+
+extension Body: ApproximateEquatable {
+	static func ~= (lhs: Body, rhs: Body) -> Bool {
+		return (lhs.size ~= rhs.size) && (lhs.position ~= rhs.position)
+	}
 }

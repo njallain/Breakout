@@ -23,7 +23,7 @@ protocol CollisionScene: EntityScene,
 	CollidableComponents,
 	BodyComponents,
 	MovableComponents,
-	SideComponents,
+	PlayerSideComponents,
 	BreakableComponents {
 }
 
@@ -87,8 +87,8 @@ class CollisionSystem<SceneType: CollisionScene>: System {
 			updatedBody.position = movable.move.moved(point: source.body.position, timeDelta: timeDelta)
 			scene.bodies.update(entity: source.entity, component: updatedBody)
 		case .changeSide:
-			guard let mySide = scene.sides.get(entity: source.entity) else { return }
-			scene.sides.update(entity: target.entity, component: mySide)
+			guard let mySide = scene.playerSides.get(entity: source.entity) else { return }
+			scene.playerSides.update(entity: target.entity, component: mySide)
 		case .inert:
 			break
 		}

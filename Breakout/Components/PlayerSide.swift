@@ -16,7 +16,7 @@ import SwiftECS
 	- ball: the last player to hit the ball
 	- bricks: the side that the brick is on (hitting the other player's bricks scores higher)
 */
-enum Side: Component {
+enum PlayerSide: Component {
 	case playerOne
 	case playerTwo
 
@@ -30,7 +30,7 @@ enum Side: Component {
 	}
 }
 
-protocol SideComponents {
-	associatedtype SideContainerType: ComponentContainer where SideContainerType.ComponentType == Side
-	var sides: SideContainerType {get}
+protocol PlayerSideComponents {
+	associatedtype SideContainerType: ComponentContainer where SideContainerType.ComponentType == PlayerSide
+	var playerSides: SideContainerType {get}
 }

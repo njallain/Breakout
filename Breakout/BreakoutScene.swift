@@ -20,13 +20,13 @@ class BreakoutScene: EntityScene, MovementScene, CollisionScene {
 	let builder = EntityBuilder()
 	weak var rootNode: SKNode?
 	var sceneSize = CGSize.zero
-	var brickLayout = BrickLayout(sceneSize: .zero)
+	var layout = SceneLayout(sceneSize: .zero)
 	var lastUpdate = TimeInterval(0)
 
 	// all components
 	let nodes = DenseComponentContainer<SKNode>()
 	let bodies = DenseComponentContainer<Body>()
-	let sides = DenseComponentContainer<Side>()
+	let playerSides = DenseComponentContainer<PlayerSide>()
 	let breakables = DenseComponentContainer<Breakable>()
 	let movables = SparseComponentContainer<Movable>()
 	let collidables = DenseComponentContainer<Collidable>()
@@ -39,7 +39,7 @@ class BreakoutScene: EntityScene, MovementScene, CollisionScene {
 	func setup(rootNode: SKNode, sceneSize: CGSize, numberOfPlayers: Int) {
 		self.rootNode = rootNode
 		self.sceneSize = sceneSize
-		self.brickLayout = BrickLayout(sceneSize: sceneSize)
+		self.layout = SceneLayout(sceneSize: sceneSize)
 
 		// make sure our state is reset
 		builder.destroyAll()
@@ -83,14 +83,14 @@ class BreakoutScene: EntityScene, MovementScene, CollisionScene {
 */
 extension BreakoutScene {
 	private func setupBricks() {
-		for side in [Side.playerOne, Side.playerTwo] {
-			for row in 0 ..< brickLayout.rowsPerSide {
-				for column in 0 ..< brickLayout.columns {
-					let brickSprite = SKSpriteNode(color: side.brickColor, size: brickLayout.brickSize)
+		for side in [PlayerSide.playerOne, PlayerSide.playerTwo] {
+			for row in 0 ..< layout.rowsPerSide {
+				for column in 0 ..< layout.columns {
+					let brickSprite = SKSpriteNode(color: side.brickColor, size: layout.brickSize)
 					brickSprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
 					builder.build(node: brickSprite, list: nodes)
-						.add(bodies, brickLayout.brickBody(row: row, column: column, side: side))
-						.add(sides, side)
+						.add(bodies, layout.brickBody(row: row, column: column, side: side))
+						.add(playerSides, side)
 						.add(breakables, Breakable(health: 2, alignedScore: 1, opposingScore: 2))
 						.add(collidables, .inert)
 					rootNode?.addChild(brickSprite)
@@ -100,8 +100,8 @@ extension BreakoutScene {
 	}
 
 	private func setupBalls() {
-		let ballSize = CGSize(width: brickLayout.brickSize.height, height: brickLayout.brickSize.height)
-		for side in [Side.playerOne, Side.playerTwo] {
+		let ballSize = CGSize(width: layout.brickSize.height, height: layout.brickSize.height)
+		for side in [PlayerSide.playerOne, PlayerSide.playerTwo] {
 			let ballSprite = SKSpriteNode(color: side.ballColor, size: ballSize)
 			ballSprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
 			let position = CGPoint(x: sceneSize.width/2, y: sceneSize.height/4 * side.verticalMultipler)
@@ -109,39 +109,42 @@ extension BreakoutScene {
 			builder.build(node: ballSprite, list: nodes)
 				.add(bodies, Body(position: position, size: ballSize))
 				.add(movables, Movable(move: .moveBy(velocity: direction), previousPosition: position))
-				.add(sides, side)
+				.add(playerSides, side)
 				.add(collisionChecks, CollisionCheck())
 				.add(collidables, .rebound)
 			rootNode?.addChild(ballSprite)
 		}
 	}
 	private func setupBorders() {
-		let middle = sceneSize.width / 2
-		let left = CGFloat(-10)
-		let right = sceneSize.width + 10
-		let top = (sceneSize.height/2) + 10
-		let bottom = -top
-		// left side
-		buildBorder(position: CGPoint(x: left, y: 0), size: CGSize(width: 20, height: sceneSize.height))
-		// right side
-		buildBorder(position: CGPoint(x: right, y: 0), size: CGSize(width: 20, height: sceneSize.height))
-		// top side
-		buildBorder(position: CGPoint(x: middle, y: top), size: CGSize(width: sceneSize.width, height: 20))
-		// bottom side
-		buildBorder(position: CGPoint(x: middle, y: bottom), size: CGSize(width: sceneSize.width, height: 20))
+		buildBorder(side: .left)
+		buildBorder(side: .right)
+		buildBorder(side: .top)
+		buildBorder(side: .bottom)
 	}
 
-	private func buildBorder(position: CGPoint, size: CGSize) {
-		builder.build()
-			.add(bodies, Body(position: position, size: size))
+	private func buildBorder(side: SceneSide) {
+		let body = layout.borderBody(forSide: side)
+		let entity  = builder.build()
+			.add(bodies, body)
 			.add(collidables, .inert)
+
+		switch side {
+		case .left, .right:
+			break
+		case .top, .bottom:
+			let sprite = SKSpriteNode(color: .gray, size: CGSize(width: body.size.width, height: layout.borderVisualWidth))
+			sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+			sprite.position = side.borderVisualPosition(layout: layout)
+			entity.add(nodes, sprite)
+			rootNode?.addChild(sprite)
+		}
 	}
 }
 
 /**
  Side specific values
 */
-extension Side {
+extension PlayerSide {
 	var brickColor: SKColor {
 		switch self {
 		case.playerOne:
