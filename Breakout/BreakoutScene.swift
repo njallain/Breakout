@@ -52,6 +52,7 @@ class BreakoutScene: EntityScene, MovementScene, CollisionScene {
 		setupBricks()
 		setupBorders()
 		setupBalls()
+		setupPaddles()
 
 		// make sure all sprites are positioned correctly
 		updateSprites()
@@ -122,9 +123,13 @@ extension BreakoutScene {
 		buildBorder(side: .bottom)
 	}
 
+	private func setupPaddles() {
+		buildPaddle(side: .playerOne)
+		buildPaddle(side: .playerTwo)
+	}
 	private func buildBorder(side: SceneSide) {
 		let body = layout.borderBody(forSide: side)
-		let entity  = builder.build()
+		builder.build()
 			.add(bodies, body)
 			.add(collidables, .inert)
 
@@ -135,9 +140,29 @@ extension BreakoutScene {
 			let sprite = SKSpriteNode(color: .gray, size: CGSize(width: body.size.width, height: layout.borderVisualWidth))
 			sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
 			sprite.position = side.borderVisualPosition(layout: layout)
-			entity.add(nodes, sprite)
+			// the sprite isn't added to the entity.  if it is, the position would be adjusted
+			// to have the same center as the entity body
 			rootNode?.addChild(sprite)
 		}
+	}
+
+	private func buildPaddle(side: PlayerSide) {
+		let body = layout.paddleBody(forSide: side.sceneSide)
+		let sprite = SKSpriteNode(color: side.paddleColor, size: body.size)
+		sprite.position = body.position
+		sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+		builder.build(node: sprite, list: nodes)
+			.add(bodies, body)
+			.add(playerSides, side)
+			.add(collidables, .changeSide)
+		rootNode?.addChild(sprite)
+
+		let touchBody = layout.touchBody(forSide: side.sceneSide)
+		let touchSprite = SKSpriteNode(color: side.touchColor, size: touchBody.size)
+		touchSprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+		builder.build(node: touchSprite, list: nodes)
+			.add(bodies, touchBody)
+		rootNode?.addChild(touchSprite)
 	}
 }
 
@@ -155,5 +180,20 @@ extension PlayerSide {
 	}
 	var ballColor: SKColor {
 		return brickColor
+	}
+	var paddleColor: SKColor {
+		return brickColor
+	}
+	var touchColor: SKColor {
+		return .gray
+	}
+
+	var sceneSide: SceneSide {
+		switch self {
+		case .playerOne:
+			return .bottom
+		case .playerTwo:
+			return .top
+		}
 	}
 }
