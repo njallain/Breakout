@@ -167,7 +167,7 @@ extension BreakoutScene {
 }
 
 /**
- Side specific values
+ PlayerSide specific values
 */
 extension PlayerSide {
 	var brickColor: SKColor {
