@@ -38,49 +38,47 @@ class CollisionSystem<SceneType: CollisionScene>: System {
 		scene.collisionChecks.forEach(with: scene.collidables, scene.bodies) { entity, _, collidable, body in
 			let velocity = scene.movables.get(entity: entity)?.velocity ?? .zero
 			let source = CollisionEntity(entity: entity, collidable: collidable, body: body, velocity: velocity)
-			scene.collidables.forEachUntil(with: scene.bodies) { targetEntity, targetCollidable, targetBody in
+			var collision: Collision?
+			scene.collidables.forEach(with: scene.bodies) { targetEntity, targetCollidable, targetBody in
 				if targetEntity != source.entity {
-					let targetVelocity = scene.movables.get(entity: targetEntity)?.velocity ?? .zero
-					let target = CollisionEntity(
-						entity: targetEntity,
-						collidable: targetCollidable,
-						body: targetBody,
-						velocity: targetVelocity)
-					if handleCollision(scene: scene, source: source, target: target, timeDelta: timeDelta) != nil {
-						return .break
+					let intersection = source.body.bounds.intersection(targetBody.bounds)
+					if !intersection.isNull {
+						// take the collision with more area
+						if max(intersection.width, intersection.height) > collision?.size ?? 0 {
+							let targetVelocity = scene.movables.get(entity: targetEntity)?.velocity ?? .zero
+						  let target = CollisionEntity(entity: targetEntity, collidable: targetCollidable,
+						  	body: targetBody, velocity: targetVelocity)
+							collision = Collision(source: source, target: target, intersection: intersection)
+						}
 					}
 				}
-				return .continue
+			}
+			if let collision = collision {
+				handleCollision(scene: scene, collision: collision, timeDelta: timeDelta)
 			}
 		}
 	}
 
 	private func handleCollision<SceneType: CollisionScene>(
 		scene: SceneType,
-		source: CollisionEntity,
-		target: CollisionEntity,
-		timeDelta: TimeInterval) -> Collision? {
-		if let collision = collision(body: source.body, otherBody: target.body) {
-			resolveCollision(scene: scene, source: source, target: target, collision: collision, timeDelta: timeDelta)
-			resolveCollision(scene: scene, source: target, target: source, collision: collision, timeDelta: timeDelta)
-			return collision
-		}
-		return nil
+		collision: Collision,
+		timeDelta: TimeInterval) {
+		resolveCollision(scene: scene, source: collision.source, target: collision.target,
+			surface: collision.surface, timeDelta: timeDelta)
+		resolveCollision(scene: scene, source: collision.target, target: collision.source,
+			surface: collision.surface, timeDelta: timeDelta)
 	}
 
 	private func resolveCollision<SceneType: CollisionScene>(
 		scene: SceneType,
 		source: CollisionEntity,
 		target: CollisionEntity,
-		collision: Collision,
+		surface: CollisionSurface,
 		timeDelta: TimeInterval) {
-//		if let breakable = scene.breakables.get(source.entity) {
-//			guard let mySide = scene.sides.get(entity: source.entity)
-//		}
 		switch source.collidable {
 		case .rebound:
 			guard var movable = scene.movables.get(entity: source.entity) else { return }
-			movable.move = movable.move.reflected(collision: collision)
+			movable.move = movable.move.reflected(surface: surface)
 			scene.movables.update(entity: source.entity, component: movable)
 			// move the body by the new vector to avoid the same collision next frame
 			var updatedBody = source.body
@@ -92,41 +90,6 @@ class CollisionSystem<SceneType: CollisionScene>: System {
 		case .inert:
 			break
 		}
-	}
-
-	/**
-	 Determine if and where a collision occurrs between the 2 bodies
-	 Since everything in this game is a rectangle, it just checks the
-	 bounds of both bodies
-	 */
-	private func collision(body: Body, otherBody: Body) -> Collision? {
-		let target = otherBody.bounds
-		let source = body.bounds
-		let topLeft = target.contains(source.topLeft)
-		let bottomLeft = target.contains(source.bottomLeft)
-		let topRight = target.contains(source.topRight)
-		let bottomRight = target.contains(source.bottomRight)
-		if topLeft {
-			if topRight { return .horizontal }
-			if bottomLeft { return .vertical }
-			return Collision.largestOverlap(source.topLeft, target.bottomRight)
-		}
-		if topRight {
-			// already checked topLeft & topRight
-			if bottomRight { return .vertical }
-			return Collision.largestOverlap(source.topRight, target.bottomLeft)
-		}
-		if bottomRight {
-			if bottomLeft { return .horizontal }
-			if topRight { return .vertical }
-			return Collision.largestOverlap(source.bottomRight, target.topLeft)
-		}
-		if bottomLeft {
-			// already checked bottomLeft & bottomRight
-			if topLeft { return .vertical }
-			return Collision.largestOverlap(source.bottomLeft, target.topRight)
-		}
-		return nil
 	}
 }
 
@@ -140,12 +103,19 @@ struct CollisionEntity {
 	let velocity: CGVector
 }
 
+struct Collision {
+	let source: CollisionEntity
+	let target: CollisionEntity
+	let intersection: CGRect
+	var surface: CollisionSurface { return intersection.width >= intersection.height ? .horizontal : .vertical }
+	var size: CGFloat { return max(intersection.width, intersection.height) }
+}
 /**
  The data about a collision.
  In the case of these simplistic collisions all that is needed is
  whether the collision is against a vertical surface or a horizontal
 */
-enum Collision {
+enum CollisionSurface {
 	case vertical
 	case horizontal
 
@@ -157,23 +127,18 @@ enum Collision {
 			return CGVector(dx: vector.dx, dy: -vector.dy)
 		}
 	}
-	static func largestOverlap(_ lhs: CGPoint, _ rhs: CGPoint) -> Collision {
-		let xOverlap = abs(lhs.x - rhs.x)
-		let yOverlap = abs(lhs.y - rhs.y)
-		return xOverlap > yOverlap ? .horizontal : .vertical
-	}
 }
 
 /**
  Helpers to handle the collision for a moving entity
  */
 extension Move {
-	func reflected(collision: Collision) -> Move {
+	func reflected(surface: CollisionSurface) -> Move {
 		switch self {
 		case .none, .moveTo, .moveToSide:
 			return self
 		case .moveBy(let velocity):
-			return .moveBy(velocity: collision.reflect(vector: velocity))
+			return .moveBy(velocity: surface.reflect(vector: velocity))
 		}
 	}
 }
