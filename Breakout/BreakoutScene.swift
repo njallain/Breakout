@@ -16,7 +16,7 @@ import SwiftECS
  However, to remove a bit of extra complexity associated with the GameScene
  its been separated
 */
-class BreakoutScene: EntityScene, MovementScene, CollisionScene {
+class BreakoutScene: EntityScene, MovementScene, CollisionScene, ControllerComponents {
 	let builder = EntityBuilder()
 	weak var rootNode: SKNode?
 	var sceneSize = CGSize.zero
@@ -31,6 +31,7 @@ class BreakoutScene: EntityScene, MovementScene, CollisionScene {
 	let movables = SparseComponentContainer<Movable>()
 	let collidables = DenseComponentContainer<Collidable>()
 	let collisionChecks = SparseComponentContainer<CollisionCheck>()
+	let controllers = SparseComponentContainer<Controller>()
 
 	// all systems
 	let movementSystem = MovementSystem<BreakoutScene>()
@@ -46,13 +47,14 @@ class BreakoutScene: EntityScene, MovementScene, CollisionScene {
 		builder.unregisterAll()
 
 		// register all containers
-		builder.register(containers: [nodes, bodies])
+		builder.register(containers: [
+			nodes, bodies, playerSides, breakables, movables, collidables, collisionChecks, controllers])
 
 		// setup all the entiies
 		setupBricks()
 		setupBorders()
 		setupBalls()
-		setupPaddles()
+		setupPaddles(numberOfPlayers: numberOfPlayers)
 
 		// make sure all sprites are positioned correctly
 		updateSprites()
@@ -73,8 +75,12 @@ class BreakoutScene: EntityScene, MovementScene, CollisionScene {
 	}
 
 	private func updateSprites() {
-		nodes.forEach(with: bodies) { _, sprite, body in
-			sprite.position = body.position
+		nodes.forEach(with: bodies) { entity, node, body in
+			node.position = body.position
+			if let playerSide = playerSides.get(entity: entity),
+				let sprite = node as? SKSpriteNode {
+				sprite.color = playerSide.ballColor
+			}
 		}
 	}
 }
@@ -123,15 +129,21 @@ extension BreakoutScene {
 		buildBorder(side: .bottom)
 	}
 
-	private func setupPaddles() {
-		buildPaddle(side: .playerOne)
-		buildPaddle(side: .playerTwo)
+	private func setupPaddles(numberOfPlayers: Int) {
+		buildPaddle(side: .playerOne, isPlayer: numberOfPlayers >= 1)
+		buildPaddle(side: .playerTwo, isPlayer: numberOfPlayers >= 2)
 	}
 	private func buildBorder(side: SceneSide) {
 		let body = layout.borderBody(forSide: side)
-		builder.build()
+		let entity = builder.build()
 			.add(bodies, body)
 			.add(collidables, .inert)
+	  if let playerSide = side.playerSide {
+			entity.add(collidables, .changeSide)
+				.add(playerSides, playerSide.otherSide)
+		} else {
+			entity.add(collidables, .inert)
+		}
 
 		switch side {
 		case .left, .right:
@@ -146,26 +158,44 @@ extension BreakoutScene {
 		}
 	}
 
-	private func buildPaddle(side: PlayerSide) {
+	private func buildPaddle(side: PlayerSide, isPlayer: Bool) {
 		let body = layout.paddleBody(forSide: side.sceneSide)
 		let sprite = SKSpriteNode(color: side.paddleColor, size: body.size)
 		sprite.position = body.position
 		sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-		builder.build(node: sprite, list: nodes)
+		let paddle = builder.build(node: sprite, list: nodes)
 			.add(bodies, body)
 			.add(playerSides, side)
 			.add(collidables, .changeSide)
+			.add(movables, Movable(move: .none, previousPosition: body.position))
 		rootNode?.addChild(sprite)
 
 		let touchBody = layout.touchBody(forSide: side.sceneSide)
 		let touchSprite = SKSpriteNode(color: side.touchColor, size: touchBody.size)
 		touchSprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-		builder.build(node: touchSprite, list: nodes)
+		let touchNode = builder.build(node: touchSprite, list: nodes)
 			.add(bodies, touchBody)
+			.add(movables, Movable(move: .none, previousPosition: touchBody.position))
+		if isPlayer {
+			touchNode.add(controllers, Controller(entity: paddle.entity))
+		}
 		rootNode?.addChild(touchSprite)
 	}
 }
 
+/// Input extensions
+extension BreakoutScene {
+	func move(entity: Entity, to point: CGPoint) {
+		guard let (controller, movable) = entity.get(components: controllers, movables),
+			let paddleMovable = movables.get(entity: controller.entity) else { return }
+		var updatedPaddle = paddleMovable
+		var updatedController = movable
+		updatedPaddle.move = .moveToSide(x: point.x)
+		updatedController.move = .moveToSide(x: point.x)
+		movables.update(entity: entity, component: updatedPaddle)
+		movables.update(entity: controller.entity, component: updatedController)
+	}
+}
 /**
  PlayerSide specific values
 */
@@ -194,6 +224,19 @@ extension PlayerSide {
 			return .bottom
 		case .playerTwo:
 			return .top
+		}
+	}
+}
+
+extension SceneSide {
+	var playerSide: PlayerSide? {
+		switch self {
+		case .left, .right:
+			return nil
+		case .top:
+			return .playerTwo
+		case .bottom:
+			return .playerOne
 		}
 	}
 }

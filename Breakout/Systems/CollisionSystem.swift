@@ -170,7 +170,7 @@ enum Collision {
 extension Move {
 	func reflected(collision: Collision) -> Move {
 		switch self {
-		case .moveTo:
+		case .none, .moveTo, .moveToSide:
 			return self
 		case .moveBy(let velocity):
 			return .moveBy(velocity: collision.reflect(vector: velocity))

@@ -28,6 +28,14 @@ enum PlayerSide: Component {
 			return 1
 		}
 	}
+	var otherSide: PlayerSide {
+		switch self {
+		case .playerOne:
+			return .playerTwo
+		case .playerTwo:
+			return .playerOne
+		}
+	}
 }
 
 protocol PlayerSideComponents {
