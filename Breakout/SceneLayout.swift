@@ -104,6 +104,23 @@ struct SceneLayout {
 		let size = CGSize(width: paddleSize.width, height: touchAreaHeight)
 		return Body(position: position, size: size)
 	}
+
+	func gridPosition(for point: CGPoint) -> GridPosition {
+		return GridPosition(
+			x: Int(floor(point.x / brickSizeWithBorder.width)),
+			y: Int(floor(point.y / brickSizeWithBorder.height)))
+	}
+	func gridPositions(for rect: CGRect) -> Set<GridPosition> {
+		let topRight = gridPosition(for: rect.topRight)
+		let bottomLeft = gridPosition(for: rect.bottomLeft)
+		var positions =  Set<GridPosition>()
+		for gridX in bottomLeft.x...topRight.x {
+			for gridY in bottomLeft.y...topRight.y {
+				positions.insert(GridPosition(x: gridX, y: gridY))
+			}
+		}
+		return positions
+	}
 }
 
 enum SceneSide {

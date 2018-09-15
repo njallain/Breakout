@@ -14,7 +14,7 @@ import SwiftECS
  - Movables: determine how the entity moves
  - Bodies: the location of the entity
 */
-protocol MovementScene: EntityScene, MovableComponents, BodyComponents {
+protocol MovementScene: EntityScene, MovableComponents, BodyComponents, GridPositionTags {
 }
 
 /**
@@ -29,6 +29,7 @@ class MovementSystem<SceneType: MovementScene>: System {
 			updatedBody.position = movable.move.moved(point: updatedBody.position, timeDelta: timeDelta)
 			scene.bodies.update(entity: entity, component: updatedBody)
 			scene.movables.update(entity: entity, component: updatedMovable)
+			scene.gridPositions.set(tags: scene.layout.gridPositions(for: updatedBody.bounds), forEntity: entity)
 		}
 	}
 }

@@ -60,6 +60,47 @@ class SceneLayoutTests: XCTestCase {
 			CGSize(width: layout.borderWidth, height: layout.sceneSize.height),
 			layout.borderBody(forSide: .right).size)
 	}
+
+	func testGridPosition() {
+		let grid = layout.brickSizeWithBorder
+		assertEqual(GridPosition(x: 0, y: 0), layout.gridPosition(for: CGPoint(x: grid.width/2, y: grid.height/2)))
+		assertEqual(GridPosition(x: -1, y: -1), layout.gridPosition(for: CGPoint(x: -grid.width/2, y: -grid.height/2)))
+		assertEqual(GridPosition(x: 5, y: -3),
+			layout.gridPosition(for: CGPoint(x: grid.width * 5  + grid.width/2, y: -grid.height * 3 + grid.height/2)))
+	}
+
+	func testGridPositions() {
+		let grid = layout.brickSizeWithBorder
+		let rect = CGRect(
+			origin: CGPoint(x: -grid.width * 2 + grid.width/2, y: -grid.height / 2),
+			size: CGSize(width: grid.width * 4, height: grid.height * 3))
+		let positions = layout.gridPositions(for: rect)
+		assertEqual(20, positions.count)
+		assertTrue(positions.contains(GridPosition(x: -2, y: -1)))
+		assertTrue(positions.contains(GridPosition(x: -1, y: -1)))
+		assertTrue(positions.contains(GridPosition(x: 0, y: -1)))
+		assertTrue(positions.contains(GridPosition(x: 1, y: -1)))
+		assertTrue(positions.contains(GridPosition(x: 2, y: -1)))
+
+		assertTrue(positions.contains(GridPosition(x: -2, y: 0)))
+		assertTrue(positions.contains(GridPosition(x: -1, y: 0)))
+		assertTrue(positions.contains(GridPosition(x: 0, y: 0)))
+		assertTrue(positions.contains(GridPosition(x: 1, y: 0)))
+		assertTrue(positions.contains(GridPosition(x: 2, y: 1)))
+
+		assertTrue(positions.contains(GridPosition(x: -2, y: 1)))
+		assertTrue(positions.contains(GridPosition(x: -1, y: 1)))
+		assertTrue(positions.contains(GridPosition(x: 0, y: 1)))
+		assertTrue(positions.contains(GridPosition(x: 1, y: 1)))
+		assertTrue(positions.contains(GridPosition(x: 2, y: 1)))
+
+		assertTrue(positions.contains(GridPosition(x: -2, y: 2)))
+		assertTrue(positions.contains(GridPosition(x: -1, y: 2)))
+		assertTrue(positions.contains(GridPosition(x: 0, y: 2)))
+		assertTrue(positions.contains(GridPosition(x: 1, y: 2)))
+		assertTrue(positions.contains(GridPosition(x: 2, y: 2)))
+	}
+
 	private let layout = SceneLayout(
 			sceneSize: CGSize(width: 200, height: 600),
 			rowsPerSide: 2,

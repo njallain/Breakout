@@ -16,7 +16,7 @@ import SwiftECS
  However, to remove a bit of extra complexity associated with the GameScene
  its been separated
 */
-class BreakoutScene: EntityScene, MovementScene, CollisionScene, ControllerComponents {
+class BreakoutScene: EntityScene, MovementScene, CollisionScene, ControllerComponents, GridPositionTags {
 	let builder = EntityBuilder()
 	weak var rootNode: SKNode?
 	var sceneSize = CGSize.zero
@@ -32,6 +32,7 @@ class BreakoutScene: EntityScene, MovementScene, CollisionScene, ControllerCompo
 	let collidables = DenseComponentContainer<Collidable>()
 	let collisionChecks = SparseComponentContainer<CollisionCheck>()
 	let controllers = SparseComponentContainer<Controller>()
+	let gridPositions = DenseTagContainer<GridPosition>()
 
 	// all systems
 	let movementSystem = MovementSystem<BreakoutScene>()
@@ -95,11 +96,13 @@ extension BreakoutScene {
 				for column in 0 ..< layout.columns {
 					let brickSprite = SKSpriteNode(color: side.brickColor, size: layout.brickSize)
 					brickSprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-					builder.build(node: brickSprite, list: nodes)
-						.add(bodies, layout.brickBody(row: row, column: column, side: side))
+					let brickBody = layout.brickBody(row: row, column: column, side: side)
+					let node = builder.build(node: brickSprite, list: nodes)
+						.add(bodies, brickBody)
 						.add(playerSides, side)
 						.add(breakables, Breakable(health: 2, alignedScore: 1, opposingScore: 2))
 						.add(collidables, .inert)
+					gridPositions.set(tags: layout.gridPositions(for: brickBody.bounds), forEntity: node.entity)
 					rootNode?.addChild(brickSprite)
 				}
 			}
@@ -138,6 +141,7 @@ extension BreakoutScene {
 		let entity = builder.build()
 			.add(bodies, body)
 			.add(collidables, .inert)
+		gridPositions.set(tags: layout.gridPositions(for: body.bounds), forEntity: entity)
 	  if let playerSide = side.playerSide {
 			entity.add(collidables, .changeSide)
 				.add(playerSides, playerSide.otherSide)
@@ -168,6 +172,7 @@ extension BreakoutScene {
 			.add(playerSides, side)
 			.add(collidables, .changeSide)
 			.add(movables, Movable(move: .none, previousPosition: body.position))
+		gridPositions.set(tags: layout.gridPositions(for: body.bounds), forEntity: paddle.entity)
 		rootNode?.addChild(sprite)
 
 		let touchBody = layout.touchBody(forSide: side.sceneSide)

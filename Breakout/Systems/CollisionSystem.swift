@@ -24,7 +24,8 @@ protocol CollisionScene: EntityScene,
 	BodyComponents,
 	MovableComponents,
 	PlayerSideComponents,
-	BreakableComponents {
+	BreakableComponents,
+	GridPositionTags {
 }
 
 /**
@@ -36,11 +37,14 @@ protocol CollisionScene: EntityScene,
 class CollisionSystem<SceneType: CollisionScene>: System {
 	func update<SceneType: CollisionScene>(scene: SceneType, timeDelta: TimeInterval) {
 		scene.collisionChecks.forEach(with: scene.collidables, scene.bodies) { entity, _, collidable, body in
+			let gridPositions = scene.gridPositions.tags(forEntity: entity)
 			let velocity = scene.movables.get(entity: entity)?.velocity ?? .zero
 			let source = CollisionEntity(entity: entity, collidable: collidable, body: body, velocity: velocity)
 			var collision: Collision?
-			scene.collidables.forEach(with: scene.bodies) { targetEntity, targetCollidable, targetBody in
-				if targetEntity != source.entity {
+			for targetEntity in scene.gridPositions.entities(withAnyTag: gridPositions) {
+				guard targetEntity != entity,
+					let targetCollidable = scene.collidables.get(entity: targetEntity),
+					let targetBody = scene.bodies.get(entity: targetEntity) else { continue }
 					let intersection = source.body.bounds.intersection(targetBody.bounds)
 					if !intersection.isNull {
 						// take the collision with more area
@@ -51,7 +55,6 @@ class CollisionSystem<SceneType: CollisionScene>: System {
 							collision = Collision(source: source, target: target, intersection: intersection)
 						}
 					}
-				}
 			}
 			if let collision = collision {
 				handleCollision(scene: scene, collision: collision, timeDelta: timeDelta)
