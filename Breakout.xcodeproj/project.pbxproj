@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		731E6E9D2143DBAC008FB25A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 731E6E9C2143DBAC008FB25A /* README.md */; };
+		732ADD062151A0CA0017E9BD /* Agent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732ADD052151A0CA0017E9BD /* Agent.swift */; };
+		732ADD082151A1A40017E9BD /* AgentSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732ADD072151A1A40017E9BD /* AgentSystem.swift */; };
 		73663968214701BE00E75A1F /* SwiftECS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73663967214701BE00E75A1F /* SwiftECS.framework */; };
 		73663969214701BE00E75A1F /* SwiftECS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73663967214701BE00E75A1F /* SwiftECS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		7366396F2149AB3500E75A1F /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7366396E2149AB3500E75A1F /* Controller.swift */; };
+		7366396F2149AB3500E75A1F /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7366396E2149AB3500E75A1F /* PlayerController.swift */; };
 		73663971214D79C300E75A1F /* GridPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73663970214D79C300E75A1F /* GridPosition.swift */; };
 		738C254C21373586001EC1B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C254B21373586001EC1B0 /* AppDelegate.swift */; };
 		738C255221373586001EC1B0 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738C255121373586001EC1B0 /* GameScene.swift */; };
@@ -59,8 +61,10 @@
 
 /* Begin PBXFileReference section */
 		731E6E9C2143DBAC008FB25A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		732ADD052151A0CA0017E9BD /* Agent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agent.swift; sourceTree = "<group>"; };
+		732ADD072151A1A40017E9BD /* AgentSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentSystem.swift; sourceTree = "<group>"; };
 		73663967214701BE00E75A1F /* SwiftECS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftECS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7366396E2149AB3500E75A1F /* Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
+		7366396E2149AB3500E75A1F /* PlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
 		73663970214D79C300E75A1F /* GridPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridPosition.swift; sourceTree = "<group>"; };
 		738C254821373586001EC1B0 /* Breakout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Breakout.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		738C254B21373586001EC1B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -172,8 +176,9 @@
 				738C2596213ABA4D001EC1B0 /* PlayerSide.swift */,
 				738C2598213ABB92001EC1B0 /* Breakable.swift */,
 				738C25A4213BF172001EC1B0 /* Collidable.swift */,
-				7366396E2149AB3500E75A1F /* Controller.swift */,
+				7366396E2149AB3500E75A1F /* PlayerController.swift */,
 				73663970214D79C300E75A1F /* GridPosition.swift */,
+				732ADD052151A0CA0017E9BD /* Agent.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -183,6 +188,7 @@
 			children = (
 				738C25A0213BEDA2001EC1B0 /* MovementSystem.swift */,
 				738C25A2213BF00A001EC1B0 /* CollisionSystem.swift */,
+				732ADD072151A1A40017E9BD /* AgentSystem.swift */,
 			);
 			path = Systems;
 			sourceTree = "<group>";
@@ -309,14 +315,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				732ADD082151A1A40017E9BD /* AgentSystem.swift in Sources */,
 				738C25A3213BF00A001EC1B0 /* CollisionSystem.swift in Sources */,
 				738C2593213AAB70001EC1B0 /* Body.swift in Sources */,
 				738C2599213ABB92001EC1B0 /* Breakable.swift in Sources */,
 				738C258F213896A4001EC1B0 /* BreakoutScene.swift in Sources */,
 				738C255221373586001EC1B0 /* GameScene.swift in Sources */,
 				738C2597213ABA4D001EC1B0 /* PlayerSide.swift in Sources */,
+				732ADD062151A0CA0017E9BD /* Agent.swift in Sources */,
 				738C255421373586001EC1B0 /* GameViewController.swift in Sources */,
-				7366396F2149AB3500E75A1F /* Controller.swift in Sources */,
+				7366396F2149AB3500E75A1F /* PlayerController.swift in Sources */,
 				73663971214D79C300E75A1F /* GridPosition.swift in Sources */,
 				738C25A5213BF172001EC1B0 /* Collidable.swift in Sources */,
 				738C2595213AACAD001EC1B0 /* Movable.swift in Sources */,

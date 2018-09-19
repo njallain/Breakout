@@ -42,19 +42,20 @@ class CollisionSystem<SceneType: CollisionScene>: System {
 			let source = CollisionEntity(entity: entity, collidable: collidable, body: body, velocity: velocity)
 			var collision: Collision?
 			for targetEntity in scene.gridPositions.entities(withAnyTag: gridPositions) {
-				guard targetEntity != entity,
+				guard
+					targetEntity != entity,
 					let targetCollidable = scene.collidables.get(entity: targetEntity),
 					let targetBody = scene.bodies.get(entity: targetEntity) else { continue }
-					let intersection = source.body.bounds.intersection(targetBody.bounds)
-					if !intersection.isNull {
-						// take the collision with more area
-						if max(intersection.width, intersection.height) > collision?.size ?? 0 {
-							let targetVelocity = scene.movables.get(entity: targetEntity)?.velocity ?? .zero
-						  let target = CollisionEntity(entity: targetEntity, collidable: targetCollidable,
-						  	body: targetBody, velocity: targetVelocity)
-							collision = Collision(source: source, target: target, intersection: intersection)
-						}
+				let intersection = source.body.bounds.intersection(targetBody.bounds)
+				if !intersection.isNull {
+					// take the collision with more area
+					if max(intersection.width, intersection.height) > collision?.size ?? 0 {
+						let targetVelocity = scene.movables.get(entity: targetEntity)?.velocity ?? .zero
+						let target = CollisionEntity(entity: targetEntity, collidable: targetCollidable,
+							body: targetBody, velocity: targetVelocity)
+						collision = Collision(source: source, target: target, intersection: intersection)
 					}
+				}
 			}
 			if let collision = collision {
 				handleCollision(scene: scene, collision: collision, timeDelta: timeDelta)

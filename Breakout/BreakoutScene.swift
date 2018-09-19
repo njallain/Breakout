@@ -16,7 +16,7 @@ import SwiftECS
  However, to remove a bit of extra complexity associated with the GameScene
  its been separated
 */
-class BreakoutScene: EntityScene, MovementScene, CollisionScene, ControllerComponents, GridPositionTags {
+class BreakoutScene: EntityScene, MovementScene, CollisionScene, PlayerControllerComponents, GridPositionTags {
 	let builder = EntityBuilder()
 	weak var rootNode: SKNode?
 	var sceneSize = CGSize.zero
@@ -31,7 +31,7 @@ class BreakoutScene: EntityScene, MovementScene, CollisionScene, ControllerCompo
 	let movables = SparseComponentContainer<Movable>()
 	let collidables = DenseComponentContainer<Collidable>()
 	let collisionChecks = SparseComponentContainer<CollisionCheck>()
-	let controllers = SparseComponentContainer<Controller>()
+	let controllers = SparseComponentContainer<PlayerController>()
 	let gridPositions = DenseTagContainer<GridPosition>()
 
 	// all systems
@@ -182,7 +182,7 @@ extension BreakoutScene {
 			.add(bodies, touchBody)
 			.add(movables, Movable(move: .none, previousPosition: touchBody.position))
 		if isPlayer {
-			touchNode.add(controllers, Controller(entity: paddle.entity))
+			touchNode.add(controllers, PlayerController(entity: paddle.entity))
 		}
 		rootNode?.addChild(touchSprite)
 	}
